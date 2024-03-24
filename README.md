@@ -5,7 +5,7 @@ Collection of smaller university projects that were programmed using Haskell as 
 1. [Assignment summaries](#assignmentSummaries)
 2. [Homework topic summaries](#homeworkSummaries)
 
-### Assignment summaries <a name="assignmentSummaries"></a>
+### Assignment summaries <a id="assignmentSummaries"></a>
 
 <a name="homeworkSummaries"></a>
 ### Homework topic summaries
