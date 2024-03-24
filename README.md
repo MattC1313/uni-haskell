@@ -3,16 +3,16 @@ Collection of smaller university projects that were programmed using Haskell as 
 
 ## Contents
 1. [Assignment summaries](#assignmentSummaries)
-  1. [Assignment 1](#assignment1)
-  2. [Assignment 2](#assignment2)
-  3. [Assignment 3](#assignment3)
+   1. [Assignment 1](#assignment1)
+   2. [Assignment 2](#assignment2)
+   3. [Assignment 3](#assignment3)
 2. [Homework topic summaries](#homeworkSummaries)
 
-<a name="assignmentSummaries"></a>
+<a id="assignmentSummaries"></a>
 ### Assignment summaries
 
-<a name="assignment1"></a>
-##### _Assignment 1 - Simplified run-length encoding_
+<a id="assignment1"></a>
+##### <ins>Assignment 1 - Simplified run-length encoding</ins>
 The full brief can be found in the file named *Assignment-1-handout.pdf*
 
 In this assignment, I implement a run-length encoder.
@@ -36,14 +36,14 @@ The assignment's purpose was to test my skills at creating recursive functions a
 My solution is found in the file *Assignment1.hs*
 
 <a id="assignment2"></a>
-##### _Assignment 2 - _
+##### <ins>Assignment 2 - </ins>
 The full brief can be found in the file named *Assignment-2-handout.pdf*
 
 <a id="assignment3"></a>
-##### _Assignment 3 - _
+##### <ins>Assignment 3 - </ins>
 The full brief can be found in the file named *Assignment-3-handout.pdf*
 
-<a name="homeworkSummaries"></a>
+<a id="homeworkSummaries"></a>
 ### Homework topic summaries
 Here is a brief of what topics each homework covers:
 - *week1.hs*
