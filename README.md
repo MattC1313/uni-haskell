@@ -3,9 +3,9 @@ Collection of smaller university projects that were programmed using Haskell as 
 
 ## Contents
 1. [Assignment summaries](#assignmentSummaries)
-   1. [Assignment 1](#assignment1)
-   2. [Assignment 2](#assignment2)
-   3. [Assignment 3](#assignment3)
+    1. [Assignment 1](#assignment1)
+    2. [Assignment 2](#assignment2)
+    3. [Assignment 3](#assignment3)
 2. [Homework topic summaries](#homeworkSummaries)
 
 <a id="assignmentSummaries"></a>
@@ -36,8 +36,54 @@ The assignment's purpose was to test my skills at creating recursive functions a
 My solution is found in the file *Assignment1.hs*
 
 <a id="assignment2"></a>
-##### <ins>Assignment 2 - </ins>
+##### <ins>Assignment 2 - Transaction logs</ins>
 The full brief can be found in the file named *Assignment-2-handout.pdf*
+
+- In this assignment, I create functions that handle the transaction history in a portfolio of stocks.
+- A transaction is represented by a tuple e.g. `('B', 100, 1104, "VTI", 1)`
+   - The first element is a character that is either 'B' or 'S'. This represents whether the transaction was buying or selling.
+   - The second element is an integer representing how many units were bought or sold.
+   - The third element is an integer representing the price per unit that we bought or sold at.
+   - The fourth element represents the stock that we bought.
+   - The final element represents the day that the transaction took place on.
+- So `('B', 100, 1104, "VTI", 1)` says that we bought 100 units of VTI on day 1, and we paid £1104 per unit.
+   - So the total amount that we spent was 100 × £1104 = £110400.
+- A transaction log is a list of transactions in the order they were executed. For example:
+   ```
+   [
+      ('B', 100, 1104, "VTI", 1),
+      ('B', 200, 36, "ONEQ", 3),
+      ('B', 50, 1223, "VTI", 5),
+      ('S', 150, 1240, "VTI", 9),
+      ('B', 100, 229, "IWRD", 10),
+      ('S', 200, 32, "ONEQ", 11),
+      ('S', 100, 210, "IWRD", 12)
+   ]
+   ```
+   - Note that there is a mix of buy and sell transactions, and various stocks are bought and sold.
+   - Note also that at the end of the log we do not own any stocks (eg., we bought 100 + 50 = 150 units of VTI, and then sold 150 units before the end of the log.)
+      - The brief specifies I can assume that this is the case for all transaction logs.
+- The type declaration for a `Transaction` is as follows:
+   - `type Transaction = (Char, Int, Int, String, Int)`
+- All transaction logs have the type `[Transaction]`
+
+This assignment is split into three parts: A, B, and C
+- Part A - The goal is to build a program to report the transactions for a particular stock in a human-readable format.
+   - For example, given the transaction log above, the transactions on the stock VTI will be printed as:
+      ```
+      Bought 100 units of VTI for 1104 pounds each on day 1
+      Bought 50 units of VTI for 1223 pounds each on day 5
+      Sold 150 units of VTI for 1240 pounds each on day 9
+      ```
+   - The function to do this is `trade_report` which takes the name of a stock and a transaction log as its parameters
+   - The code to test this in the GHCi would be `trade_report "VTI" test_log`
+- Part B - the goal is to build a function to tell the user how much profit or loss was made on each stock.
+   - For example, given the transaction log above, the report will be:
+      ```
+      VTI: 14450
+      ONEQ: -800
+      IWRD: -1900
+      ```
 
 <a id="assignment3"></a>
 ##### <ins>Assignment 3 - </ins>
