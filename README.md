@@ -69,7 +69,7 @@ My solution is found in the file *Assignment1.hs*
    - `type Transaction = (Char, Int, Int, String, Int)`
 - All transaction logs have the type `[Transaction]`
 
-This assignment is split into three parts: A, B, and C
+This assignment is split into three parts: A, B, and C:
 - Part A - the goal is to build a program to report the transactions for a particular stock in a human-readable format.
    - For example, given the transaction log above, the transactions on the stock VTI will be printed as:
       ```
@@ -79,6 +79,7 @@ This assignment is split into three parts: A, B, and C
       ```
    - The function to do this is `trade_report` which takes the name of a stock and a transaction log as its parameters.
    - The code to test this in the GHCi would be `trade_report "VTI" test_log`
+   - It is required that I use `map` and `filter` at some point during the function execution
 - Part B - the goal is to build a function to tell the user how much profit or loss was made on each stock.
     - For example, given the transaction log above, the report will be:
       ```
@@ -93,6 +94,7 @@ This assignment is split into three parts: A, B, and C
         - For example, given the transaction log from earlier, the transactions on the stock VTI will be `−(100 × 1104) − (50 × 1223) + (150 × 1240) = 14450`
     - The function to do this is `profit_report` which takes a list of names of stocks and a transaction log as its parameters.
     - The code to test this in the GHCi would be `profit_report ["VTI", "ONEQ"] test_log`
+    - It is required that I use `foldr` at some point during the function execution
 - Part C - the objective is to again produce a profit report, in the same format as part B, but this time the input is given in a less convenient format.
     - The trade log will be given as a plain text list of strings, such as:
       ```
@@ -132,7 +134,141 @@ This assignment is split into three parts: A, B, and C
 ##### <ins>Assignment 3 - </ins>
 The full brief can be found in the file named *Assignment-3-handout.pdf*
 
-My solution is found in the file *Assignment3.hs*
+My solution is found in the file *Main.hs*
+
+- In this assignment, I implement a maze game.
+    - `maze2.txt` through `maze6.txt` are small mazes that can be used for testing, ranging from 2 × 2 through 6 × 6 in size.
+    - `maze-big-1.txt` through `maze-big-4.txt` are larger mazes that can be used for testing.
+- The mazes are represented by ASCII art, and can be seen by opening one of the files. E.g. maze6.txt contains:
+  ```
+  ###########
+  #         #
+  ##### ### #
+  # # # # # #
+  # # # # # #
+  #   # # # #
+  # # # # # #
+  # #     # #
+  # ##### # #
+  #     # # #
+  ###########
+  ```
+- The maze is composed of square tiles, and each tile is either a wall or a corridor.
+    - The `#` character represents the wall tiles
+    - The space (` `) character represents the corridor tiles.
+- Allowed assumptions:
+    - The outer edge of the maze is surrounded by walls, as in the example above.
+    - All corridors are exactly one tile wide.
+- The game will allow the player to explore the maze.
+- The player will be represented by the 'at' (`@`) character, and will be able to move around the maze using the keys "wasd".
+- The player can walk through corridors, but not through walls.
+- There are no restrictions and any functions and techniques can be used as I see fit.
+
+This assignment is split into three parts: A, B, and C:
+- Part A - the objective is to build some functions for loading, printing, and manipulating the maze.
+    - `get_maze` takes a string containing a file path for a maze, and returns the representation of that maze as a list of strings. E.g. if "maze2.txt" is saved as M:\maze2.txt, then:
+      ```
+      ghci> get_maze "M:\\maze2.txt"
+      ["#####","# #","# # #","# # #","#####"]
+      ```
+        - On Windows, you must use two backslashes in your file paths, so `C:\Documents\Haskell\maze2.txt` must be written as `"C:\\Documents\\Haskell\\maze2.txt"`.
+        - This is because `\` is the escape character in Haskell.
+    - `print_maze` takes a maze (represented as a list of strings), and prints it out to the screen. See example below:
+      ```
+      ghci> m <- get_maze maze_path
+      ghci> print_maze m
+      #####
+      #   #
+      # # #
+      # # #
+      #####
+      ```
+    - `is_wall` takes a maze (represented as a list of strings) and a pair of integers, and returns `True` if the tile at that position is a wall (`#`) and `False` if it is a corridor (` `).
+        - Coordinates are given as pairs `(x, y)` where `x` represents the horizontal coordinate, and `y` represents the vertical coordinate.
+        - Coordinates are zero-indexed, starting from the top left of the maze.
+          ```
+          #####
+          #  b#
+          # # #
+          #a# #
+          #####
+          a is at position (1, 3) while b is at position (3, 1). For example:
+
+          ghci> m <- get_maze maze_path
+
+          ghci> is_wall m (0, 0)
+          True
+
+          ghci> is_wall m (3, 1)
+          False
+          ```
+    - `place_player` takes a maze and a pair of coordinates, and returns a new maze with the `@` symbol at those coordinates. For example:
+      ```
+      ghci> m <- get_maze maze_path
+      ghci> let x = place_player m (1, 1)
+      ghci> print_maze x
+      #####
+      #@  #
+      # # #
+      # # #
+      #####
+      ```
+- Part B - the objective is to write functions to process the player’s inputs. The player will control the game using the `w`, `a`, `s`, and `d` keys. Any other input should leave the coordinates unchanged
+    - `move` takes a pair of coordinates, and a character, and returns a pair of coordinates moved in the appropriate direction. For example:
+      ```
+      ghci> move (1, 1) 'w'
+      (1,0)
+      ghci> move (1, 1) 's'
+      (1,2)
+      ghci> move (1, 1) 'a'
+      (0,1)
+      ghci> move (1, 1) 'd'
+      (2,1)
+      ghci> move (1, 1) 'q'
+      (1,1)
+      ```
+    - `can_move` takes a maze, the player's current position, and a direction character, then returns `True` if the player can walk in that direction, and `False` otherwise.
+      ```
+      ghci> m <- get_maze maze_path
+      ghci> can_move m (1, 1) 's'
+      True
+      ghci> can_move m (1, 1) 'w'
+      False
+      ```
+    - `game_loop` is an IO action that implements the maze game, where the player moves from the top left of the maze to the bottom right using `wasd`, ensuring they cannot move through walls. For example:
+      ```
+      ghci> m <- get_maze maze_path
+      ghci> game_loop m (1, 1)
+      #####
+      #@  #
+      # # #
+      # # #
+      #####
+      
+      d
+      #####
+      # @ #
+      # # #
+      # # #
+      #####
+
+      d
+      #####
+      #  @#
+      # # #
+      # # #
+      #####
+      ```
+- Part C - the objective is to write a program that finds and displays the path from the top-left corner of the maze to the bottom-right corner of the maze.
+    - Assumptions: The maze is always a tree (there are never any cycles and there is exactly one path from the start to the finish).
+    - `get_path` takes a maze, a start coordinate, and a target coordinate, and returns the path from the start coordinate to the target coordinate. The path should include the target and start coordinates. For example:
+      ```
+      ghci> m <- get_maze maze_path
+      ghci> get_path m (1, 1) (3, 3)
+      [(1,1),(2,1),(3,1),(3,2),(3,3)]
+      ```
+    - `main` is an IO action that takes the path to a maze file as its one argument and loads, solves, and prints out the maze with the path from top-left to bottom-right, using the `.` character to indicate the path.
+        - Assumptions: the argument is correct.
 
 <a id="homeworkSummaries"></a>
 ### Homework topic summaries
