@@ -131,7 +131,7 @@ This assignment is split into three parts: A, B, and C:
     - The code to test this in the GHCi would be `complex_profit_report test_str_log test_prices`
 
 <a id="assignment3"></a>
-##### <ins>Assignment 3 - </ins>
+##### <ins>Assignment 3 - Maze game</ins>
 The full brief can be found in the file named *Assignment-3-handout.pdf*
 
 My solution is found in the file *Main.hs*
